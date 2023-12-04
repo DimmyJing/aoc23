@@ -5,7 +5,7 @@ rn :: [(String, Int)]
 rn = zip (map show [0 .. 9]) [0 ..]
 
 match :: [(String, Int)] -> String -> Int
-match wd s = case find (flip isPrefixOf s . fst) wd of Just n -> snd n; Nothing -> match wd (drop 1 s)
+match wd s = maybe (match wd (drop 1 s)) snd (find (flip isPrefixOf s . fst) wd)
 
 calc :: [(String, Int)] -> [String] -> Int
 calc n l = sum $ map (\s -> match n s * 10 + match (map (first reverse) n) (reverse s)) l
