@@ -18,7 +18,7 @@ part1 :: [String] -> Int
 part1 = sum . map fst . takeAll
 
 gears :: [String] -> [(Int, Int, Int)]
-gears s = [(i, j, v) | (v, lst) <- takeAll s, (_, i, j) <- nub $ filter (\(x, _, _) -> x == '*') lst]
+gears s = [(i, j, v) | (v, l) <- takeAll s, (i, j) <- nub $ [(i, j) | ('*', i, j) <- l]]
 
 groups :: [String] -> [[(Int, Int, Int)]]
 groups = groupBy (\(i, j, _) (k, l, _) -> i == k && j == l) . sort . gears

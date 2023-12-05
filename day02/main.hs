@@ -11,7 +11,7 @@ procA :: String -> (Int, Int, Int)
 procA s = (proc "red" s, proc "green" s, proc "blue" s)
 
 part1 :: [String] -> Int
-part1 = sum . zipWith (\idx (a, b, c) -> fromEnum (a <= 12 && b <= 13 && c <= 14) * idx) [1 ..] . map procA
+part1 = sum . zipWith (\idx (a, b, c) -> sum [idx | a <= 12 && b <= 13 && c <= 14]) [1 ..] . map procA
 
 part2 :: [String] -> Int
 part2 = sum . map ((\(a, b, c) -> a * b * c) . procA)

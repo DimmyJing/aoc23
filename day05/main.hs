@@ -4,7 +4,7 @@ import Data.List (groupBy, sort)
 
 parse :: [String] -> Int -> [(Int, [Int])]
 parse [] _ = []
-parse (x : r) n | null x || not (isDigit (head x)) = parse r (n + 1)
+parse (x : r) n | null x || not (isDigit $ head x) = parse r (n + 1)
 parse (x : r) n = (n, read <$> words x) : parse r n
 
 conv :: [String] -> [[(Int, Int, Int)]]
@@ -27,7 +27,7 @@ part1 :: [String] -> Int
 part1 = transA $ map (\x -> (x, x))
 
 part2 :: [String] -> Int
-part2 = transA (\e -> map (\((x, y), _) -> (x, x + y - 1)) $ filter (odd . snd) $ zip (zip e $ tail e) [1 ..])
+part2 = transA $ map (\(_, (x, y)) -> (y, x + y - 1)) . filter (odd . fst) . zip [1 ..] . (tail >>= zip)
 
 main :: IO ()
 main = interact $ (++ "\n") . show . part2 . lines

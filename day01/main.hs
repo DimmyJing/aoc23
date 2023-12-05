@@ -2,7 +2,7 @@ import Data.Bifunctor (first)
 import Data.List (find, isPrefixOf, isSuffixOf)
 
 rn :: [(String, Int)]
-rn = zip (show <$> [0 .. 9]) [0 ..]
+rn = (map show >>= zip) [0 .. 9]
 
 match :: [(String, Int)] -> String -> Int
 match wd s = maybe (match wd (drop 1 s)) snd (find (flip isPrefixOf s . fst) wd)

@@ -6,12 +6,12 @@ parse s = (\(x, y) f -> length ((f x :: [Int]) `intersect` f y)) (span ('|' /=) 
 part1 :: [String] -> Int
 part1 = sum . map (flip div 2 . (2 ^) . parse)
 
-part2rec :: [Int] -> [String] -> Int
-part2rec lst [] = sum lst
-part2rec (h : t) (s : r) = h + part2rec [v + fromEnum (idx < parse s) * h | (idx, v) <- zip [0 ..] t] r
+rec :: [Int] -> [String] -> Int
+rec lst [] = 0
+rec (h : t) (s : r) = h + rec [v + sum [h | idx < parse s] | (idx, v) <- zip [0 ..] t] r
 
 part2 :: [String] -> Int
-part2 s = part2rec (1 <$ [1 .. length s]) s
+part2 s = rec (1 <$ [1 .. length s]) s
 
 main :: IO ()
 main = interact ((++ "\n") . show . part2 . lines)
