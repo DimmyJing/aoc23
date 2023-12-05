@@ -11,7 +11,7 @@ part2rec lst [] = sum lst
 part2rec (h : t) (s : r) = h + part2rec [v + fromEnum (idx < parse s) * h | (idx, v) <- zip [0 ..] t] r
 
 part2 :: [String] -> Int
-part2 s = part2rec (replicate (length s) 1) s
+part2 s = part2rec (1 <$ [1 .. length s]) s
 
 main :: IO ()
-main = interact ((++ "\n") . show . part1 . lines)
+main = interact ((++ "\n") . show . part2 . lines)

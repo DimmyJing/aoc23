@@ -5,10 +5,10 @@ import Data.List (groupBy, sort)
 parse :: [String] -> Int -> [(Int, [Int])]
 parse [] _ = []
 parse (x : r) n | null x || not (isDigit (head x)) = parse r (n + 1)
-parse (x : r) n = (n, map read $ words x) : parse r n
+parse (x : r) n = (n, read <$> words x) : parse r n
 
 conv :: [String] -> [[(Int, Int, Int)]]
-conv s = map (sort . map (\(x, [i, j, k]) -> (j, j + k - 1, i - j))) (groupBy ((==) `on` fst) (parse s 0))
+conv s = sort . map (\(x, [i, j, k]) -> (j, j + k - 1, i - j)) <$> groupBy ((==) `on` fst) (parse s 0)
 
 seeds :: String -> [Int]
 seeds = map read . words . drop 7
@@ -21,7 +21,7 @@ trans ((c, d, e) : r) (a, b) | c <= a && a <= d = (a + e, min b d + e) : trans r
 trans (_ : r) b = trans r b
 
 transA :: ([Int] -> [(Int, Int)]) -> [String] -> Int
-transA f s = fst $ minimum $ foldl (\b r -> concatMap (trans r) b) (f $ seeds $ head s) (conv s)
+transA f s = fst $ minimum $ foldl (\b r -> b >>= trans r) (f $ seeds $ head s) (conv s)
 
 part1 :: [String] -> Int
 part1 = transA $ map (\x -> (x, x))

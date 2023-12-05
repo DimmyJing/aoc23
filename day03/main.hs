@@ -5,11 +5,11 @@ get :: [String] -> Int -> Int -> Char
 get s i j = if i >= 0 && i < length s && j >= 0 && j < length (head s) then s !! i !! j else '.'
 
 search :: [String] -> Int -> Int -> [(Char, Int, Int)]
-search s i j = [(v, i', j') | i' <- [i - 1 .. i + 1], j' <- [j - 1 .. j + 1], let v = get s i' j', v /= '.', not $ isDigit v]
+search s i j = [(v, k, l) | k <- [i - 1 .. i + 1], l <- [j - 1 .. j + 1], let v = get s k l, v /= '.', not $ isDigit v]
 
 takeN :: [String] -> Int -> Int -> (Int, [(Char, Int, Int)])
 takeN s i j | not (isDigit $ s !! i !! j) || (j > 0 && isDigit (s !! i !! (j - 1))) = (0, [])
-takeN s i j = let n = takeWhile isDigit $ drop j $ s !! i in (read n, concatMap (search s i) [j .. j + length n - 1])
+takeN s i j = let n = takeWhile isDigit $ drop j $ s !! i in (read n, [j .. j + length n - 1] >>= search s i)
 
 takeAll :: [String] -> [(Int, [(Char, Int, Int)])]
 takeAll s = [v | i <- [0 .. length s - 1], j <- [0 .. length (head s) - 1], let v = takeN s i j, snd v /= []]
