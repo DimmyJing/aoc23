@@ -1,8 +1,7 @@
-import Data.Char (isDigit)
 import Data.List (isPrefixOf, tails)
 
 get :: String -> String -> Int
-get col s = if col `isPrefixOf` s then read $ reverse $ takeWhile isDigit (dropWhile (not . isDigit) s) else 0
+get col s = sum [read $ reverse $ words s !! 1 | col `isPrefixOf` s]
 
 proc :: String -> String -> Int
 proc col = foldr (max . get (reverse col)) 0 . tails . reverse

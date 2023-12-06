@@ -1,10 +1,9 @@
-import Data.Char (isDigit)
 import Data.Function (on)
 import Data.List (groupBy, sort)
 
 parse :: [String] -> Int -> [(Int, [Int])]
 parse [] _ = []
-parse (x : r) n | null x || not (isDigit $ head x) = parse r (n + 1)
+parse (x : r) n | null x || head x `notElem` ['0' .. '9'] = parse r (n + 1)
 parse (x : r) n = (n, read <$> words x) : parse r n
 
 conv :: [String] -> [[(Int, Int, Int)]]
